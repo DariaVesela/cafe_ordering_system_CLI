@@ -1,0 +1,12 @@
+{
+    "1": {
+        "product_id": 1,
+        "name": "Chocolate",
+        "price": 5.0
+    },
+    "2": {
+        "product_id": 2,
+        "name": "Cake",
+        "price": 69.0
+    }
+}

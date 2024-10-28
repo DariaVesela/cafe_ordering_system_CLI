@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "name": "John Doe",
+        "address": "123 Main St",
+        "phone": "0789789789"
+    },
+    {
+        "id": 2,
+        "name": "Jane Doe",
+        "address": "456 Main St",
+        "phone": "07456456456"
+    }
+]

@@ -1,0 +1,22 @@
+[
+    {
+        "name": "cookie",
+        "price": 2.5,
+        "product_id": 99
+    },
+    {
+        "name": "fanta",
+        "price": 5.0,
+        "product_id": 12
+    },
+    {
+        "name": "banana",
+        "price": 99.0,
+        "product_id": "0"
+    },
+    {
+        "name": "water",
+        "price": 1.2,
+        "product_id": "12"
+    }
+]
