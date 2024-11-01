@@ -58,6 +58,11 @@ class ProductManager(JSONCRUDBase):
 
 #example model = Product(product_id=1, name='Chocolate', price=5)
 manager = ProductManager()
-manager.update(Product(product_id=2, name='Cake', price=69))
+manager.create(Product(product_id=2, name='Cake', price=9))
 
 print(manager.list())
+
+# manager = ProductManager()
+# manager.delete(1)
+
+# print(manager.list())
