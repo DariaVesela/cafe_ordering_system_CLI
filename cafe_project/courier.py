@@ -4,16 +4,17 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 from cafe_project.entity_manager import JSONCRUDBase
 
-@dataclass
+
 class Courier(BaseModel):
-        orders: list[Order]
+       
         courier_id: int
         name: str
+        phone: str
 
 class CourierManager(JSONCRUDBase):
         
         def __init__(self):
-            json_file = Path('src/main/data/couriers.json')
+            json_file = Path(__file__).parent/'data'/'couriers.json'
             super().__init__(json_file)
 
         def create(self, courier: Courier) -> Courier:
@@ -22,7 +23,7 @@ class CourierManager(JSONCRUDBase):
             self._write_to_json(couriers)
             return courier
         
-        #reads a concrete courier
+        #reads a concrete courier, wants the id as a STRING!
         def read(self, courier_id: int) -> Courier:
             couriers = self._read_from_json()
             return Courier(**couriers[courier_id])
@@ -37,6 +38,7 @@ class CourierManager(JSONCRUDBase):
             return list_of_couriers
         
         # updates a courier
+        # currently reshuffles the order of the couriers in the json file but I think that's fine(?)
 
         def update(self, courier: Courier) -> Courier:
                 data = self._read_from_json()
@@ -48,8 +50,14 @@ class CourierManager(JSONCRUDBase):
                 self._write_to_json(data=data)
                 return courier
         
+        # deletes a courier, takes an integer as an argument
         def delete(self, courier_id: int) -> None:
             data=self._read_from_json()
             del data[str(courier_id)]
             self._write_to_json(data=data)
             
+
+#manager = CourierManager()
+#print(manager.read('3'))
+
+#print(manager.list())
