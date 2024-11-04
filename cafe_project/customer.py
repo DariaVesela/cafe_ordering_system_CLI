@@ -3,8 +3,9 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 from cafe_project.entity_manager import JSONCRUDBase
+from pydantic import BaseModel, Field
 
-@dataclass
+
 class Customer(BaseModel):
     customer_id: int
     name: str
@@ -14,7 +15,7 @@ class Customer(BaseModel):
 
 class CustomerManager(JSONCRUDBase):
     def __init__(self):
-        json_file = Path('src/main/data/customers.json')
+        json_file = Path(__file__).parent/'data'/'customers.json'
         super().__init__(json_file)
 
     def create(self, customer: Customer) -> Customer:
@@ -52,7 +53,7 @@ class CustomerManager(JSONCRUDBase):
 
 #example model = Customer(customer_id=1, name='John Doe', address='123 Main St', phone='0789789789')
 
-# manager = CustomerManager()
-# manager.update(Customer(customer_id=1, name='John Doe', address='123 Main St', phone='0789789789'))
+manager = CustomerManager()
+manager.update(Customer(customer_id=1, name='Nash Doe', address='123 Main St', phone='0789789789'))
 
-# print(manager.list())
+print(manager.list())
