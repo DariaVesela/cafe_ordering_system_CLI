@@ -1,0 +1,12 @@
+{
+    "2": {
+        "courier_id": 2,
+        "name": "Jane Bloggs",
+        "phone": "078567456"
+    },
+    "3": {
+        "courier_id": 3,
+        "name": "Anne Hathaway",
+        "phone": "078567459"
+    }
+}
