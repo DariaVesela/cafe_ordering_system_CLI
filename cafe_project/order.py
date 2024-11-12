@@ -26,6 +26,9 @@ class OrderManager(JSONCRUDBase):
 #Current writing into file kinda ugly and unreadable
     def create (self, order: Order) -> Order:
         orders = self._read_from_json()
+        # Check for duplicate order ID
+        if str(order.order_id) in orders:
+            raise ValueError(f"Order with ID {order.order_id} already exists.")
         orders[str(order.order_id)] = order.model_dump()
         self._write_to_json(orders)
         return order
@@ -72,44 +75,57 @@ class OrderManager(JSONCRUDBase):
     # },
 
 # #CREATE
-# manager = OrderManager()
-# manager.create(order=Order(date=122024, time=1050, order_id=2, courier_id=1, products=[Product(product_id=2, name='Cake', price=9)], progress=1))
-# print(manager.list())
+manager = OrderManager()
+manager.create(order=Order(date=132022, time=1150, order_id=4, courier_id=2, products=[Product(product_id=2, name='Cake', price=9)], progress=1))
+print(manager.list())
 
 
 # #READ
 # manager = OrderManager()
-# print(manager.read("2"))
-# #print(manager.list())
+# print(manager.read(order_id=2))
+#print(manager.list())
 
 
 #UPDATE
 
-manager = OrderManager()
-order = Order(
-    date='122024',
-    time='1050',
-    order_id='2',
-    courier_id=1,
-    products=[
-        Product(
-            product_id=2,
-            name="Cake",
-            price=9.0
-        )
-    ],
-    progress='1'
-)
+# manager = OrderManager()
+# order = Order(
+#     date='122024',
+#     time='1050',
+#     order_id='2',
+#     courier_id=1,
+#     products=[
+#         Product(
+#             product_id=2,
+#             name="Cake",
+#             price=9.0
+#         )
+#     ],
+#     progress='1'
+# )
 
-manager.update(order)
-print(manager.list())
+# manager.update(order)
+# print(manager.list())
 
 #DELETE
-# order=Order(date='122023', time='1045', order_id='1', products=[Product(product_id=2, name='Cake', price=9)], progress='1',)
+# order=Order(
+#     date=122024,
+#     time=1050,
+#     order_id=2,
+#     courier_id=1,
+#     products=[
+#         Product(
+#             product_id=2,
+#             name="Cake",
+#             price=9.0
+#         )
+#     ],
+#     progress=1
+# )
 
 # manager = OrderManager()
-# manager.update(
-#     order
+# manager.delete(
+#     order_id=2
 # )
 # print(manager.list())
 
