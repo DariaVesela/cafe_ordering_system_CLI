@@ -296,8 +296,78 @@ def delete_customer(customer_id: int):
     except KeyError:
         print(f"Customer with ID {customer_id} not found.")
 
+@app.command()
+def create_courier(
+    name: str = typer.Option(..., help="The name of the courier"),
+    phone: str = typer.Option(..., help="The phone number of the courier")
+):
+    """Creates a new courier with the specified details."""
+    # Generate a unique courier_id
+    existing_couriers = courier_manager.list()
+    new_courier_id = max((courier.courier_id for courier in existing_couriers), default=0) + 1
+    
+    # Create a Courier instance
+    courier = Courier(courier_id=new_courier_id, name=name, phone=phone)
+    
+    # Use CourierManager's create method to save the courier
+    courier_manager.create(courier)
+    print(f"Courier '{name}' created with ID {new_courier_id}")
 
+@app.command()
+def read_courier(courier_id: int):
+    """Reads details of a specific courier by ID."""
+    try:
+        courier = courier_manager.read(courier_id)
+        print(f"Courier ID: {courier.courier_id}")
+        print(f"Name: {courier.name}")
+        print(f"Phone: {courier.phone}")
+    except KeyError:
+        print(f"Courier with ID {courier_id} not found.")
 
+@app.command()
+def list_couriers():
+    """Lists all couriers."""
+    couriers = courier_manager.list()
+    if not couriers:
+        print("No couriers found.")
+    else:
+        for courier in couriers:
+            print(f"Courier ID: {courier.courier_id}")
+            print(f"Name: {courier.name}")
+            print(f"Phone: {courier.phone}")
+            print("-" * 20)  # Separator between couriers
+@app.command()
+def update_courier(
+    courier_id: int,
+    name: Optional[str] = None,
+    phone: Optional[str] = None
+):
+    """Updates an existing courier's details by ID."""
+    try:
+        existing_courier = courier_manager.read(courier_id)
+        
+        # Create an updated Courier instance with either new or existing values
+        updated_courier = Courier(
+            courier_id=existing_courier.courier_id,
+            name=name if name is not None else existing_courier.name,
+            phone=phone if phone is not None else existing_courier.phone
+        )
+        
+        # Save the updated courier
+        courier_manager.update(updated_courier)
+        print(f"Courier with ID {courier_id} updated successfully.")
+    
+    except KeyError:
+        print(f"Courier with ID {courier_id} not found.")
+
+@app.command()
+def delete_courier(courier_id: int):
+    """Deletes a courier by ID."""
+    try:
+        courier_manager.delete(courier_id)
+        print(f"Courier with ID {courier_id} has been deleted.")
+    except KeyError:
+        print(f"Courier with ID {courier_id} not found.")
 
 if __name__ == "__main__":
     app()
