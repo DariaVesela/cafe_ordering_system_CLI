@@ -2,6 +2,7 @@ from argparse import ArgumentParser, Namespace
 from cafe_project.product import ProductManager, Product
 from cafe_project.customer import CustomerManager, Customer
 from cafe_project.order import OrderManager, Order
+from cafe_project.courier import CourierManager, Courier
 import typer
 from typing import Optional
 from datetime import datetime
@@ -13,6 +14,7 @@ app = typer.Typer()
 product_manager = ProductManager()
 customer_manager = CustomerManager()
 order_manager = OrderManager()
+courier_manager = CourierManager()
 
 @app.command()
 def list_products():
@@ -205,6 +207,97 @@ def delete_order(order_id: int):
         print(f"Order with ID {order_id} has been deleted.")
     except KeyError:
         print(f"Order with ID {order_id} not found.")
+
+@app.command()
+def create_customer(
+    name: str = typer.Option(..., help="The name of the customer"),
+    address: str = typer.Option(..., help="The address of the customer"),
+    phone: str = typer.Option(..., help="The phone number of the customer")
+):
+    """Creates a new customer with the specified details."""
+    
+    # Generate a unique customer_id based on the existing customers
+    existing_customers = customer_manager.list()
+    new_customer_id = max((customer.customer_id for customer in existing_customers), default=0) + 1
+    
+    # Create a Customer instance
+    customer = Customer(customer_id=new_customer_id, name=name, address=address, phone=phone)
+    
+    # Use CustomerManager's create method to save the customer
+    customer_manager.create(customer)
+    print(f"Customer '{name}' created with ID {new_customer_id}")
+
+
+@app.command()
+def read_customer(customer_id: int):
+    """Reads details of a specific customer by ID."""
+    try:
+        # Use CustomerManager's read method to retrieve the customer
+        customer = customer_manager.read(customer_id)
+        
+        # Print customer details
+        print(f"Customer ID: {customer.customer_id}")
+        print(f"Name: {customer.name}")
+        print(f"Address: {customer.address}")
+        print(f"Phone: {customer.phone}")
+        
+    except KeyError:
+        print(f"Customer with ID {customer_id} not found.")
+
+@app.command()
+def list_customers():
+    """Lists all customers."""
+    customers = customer_manager.list()  # Retrieve all customers
+    
+    if not customers:
+        print("No customers found.")
+    else:
+        for customer in customers:
+            print(f"Customer ID: {customer.customer_id}")
+            print(f"Name: {customer.name}")
+            print(f"Address: {customer.address}")
+            print(f"Phone: {customer.phone}")
+            print("-" * 20)  # Separator between customers
+
+@app.command()
+def update_customer(
+    customer_id: int,
+    name: Optional[str] = None,
+    address: Optional[str] = None,
+    phone: Optional[str] = None
+):
+    """Updates an existing customer's details by ID."""
+    try:
+        # Retrieve the existing customer
+        existing_customer = customer_manager.read(customer_id)
+        
+        # Create an updated Customer instance with either the new or existing values
+        updated_customer = Customer(
+            customer_id=existing_customer.customer_id,
+            name=name if name is not None else existing_customer.name,
+            address=address if address is not None else existing_customer.address,
+            phone=phone if phone is not None else existing_customer.phone
+        )
+        
+        # Use CustomerManager's existing update method to save the updated customer
+        customer_manager.update(updated_customer)
+        print(f"Customer with ID {customer_id} updated successfully.")
+    
+    except KeyError:
+        print(f"Customer with ID {customer_id} not found.")
+
+@app.command()
+def delete_customer(customer_id: int):
+    """Deletes a customer by ID."""
+    try:
+        # Call CustomerManager's delete method to remove the customer
+        customer_manager.delete(customer_id)
+        print(f"Customer with ID {customer_id} has been deleted.")
+    except KeyError:
+        print(f"Customer with ID {customer_id} not found.")
+
+
+
 
 if __name__ == "__main__":
     app()
