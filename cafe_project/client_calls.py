@@ -369,5 +369,6 @@ def delete_courier(courier_id: int):
     except KeyError:
         print(f"Courier with ID {courier_id} not found.")
 
+
 if __name__ == "__main__":
     app()
