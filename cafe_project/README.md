@@ -9,6 +9,17 @@
 
 This project, **Cafe Project**, is built using Python 3.13 and is structured as a modern Python project managed with [Poetry](https://python-poetry.org/). It includes utilities and dependencies to support type checking, data validation, command-line interface (CLI) creation, and testing.
 
+# Client Requirements: 
+
+- Maintain a collection of products, orders, couriers and customers which can be Created, Read, Updated and Deleted 
+
+- A robust application which does not crash
+
+- Ability to update the status of an order
+
+# Run UNIT TEST by running **PYTEST** -> test will be ran automatically  
+
+
 ## Features
 
 - **Type Checking**: Built-in support for static type checking using `mypy`.
